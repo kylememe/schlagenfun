@@ -8,8 +8,7 @@ class TeamEntityTypeConfiguration : IEntityTypeConfiguration<Team>
 
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.Id)
-            .UseHiLo("team_hilo")
+        builder.Property(e => e.Id)            
             .IsRequired();
 
         builder.Property(e => e.Name)

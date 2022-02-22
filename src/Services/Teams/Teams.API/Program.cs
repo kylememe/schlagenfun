@@ -1,26 +1,55 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+var DbPath = System.IO.Path.Join(path, "teams.db");
 
-namespace Teams.API
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<TeamsContext>(opt => opt.UseSqlite($"Data Source={DbPath}"));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+var app = builder.Build();
+
+app.MapGet("/", () => "Hello World from Teams API!");
+
+app.MapGet("/teams", async (TeamsContext db) =>
+    await db.Teams.ToListAsync());
+
+app.MapGet("/teams/{id}", async (int id, TeamsContext db) =>
+    await db.Teams.FindAsync(id)
+        is Team team
+            ? Results.Ok(team)
+            : Results.NotFound());
+
+app.MapPost("/teams", async (Team team, TeamsContext db) =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    db.Teams.Add(team);
+    await db.SaveChangesAsync();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+    return Results.Created($"/teams/{team.Id}", team);
+});
+
+app.MapPut("/teams/{id}", async (int id, Team inputTeam, TeamsContext db) =>
+{
+    var team = await db.Teams.FindAsync(id);
+
+    if (team is null) return Results.NotFound();
+
+    team.Name = inputTeam.Name;
+
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+app.MapDelete("/teams/{id}", async (int id, TeamsContext db) =>
+{
+    if (await db.Teams.FindAsync(id) is Team team)
+    {
+        db.Teams.Remove(team);
+        await db.SaveChangesAsync();
+        return Results.Ok(team);
     }
-}
+
+    return Results.NotFound();
+});
+
+
+app.Run();
