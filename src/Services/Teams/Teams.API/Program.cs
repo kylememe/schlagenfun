@@ -1,11 +1,16 @@
-var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-var DbPath = System.IO.Path.Join(path, "teams.db");
-
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<TeamsContext>(opt => opt.UseSqlite($"Data Source={DbPath}"));
+builder.Services.AddDbContext<TeamsContext>(opt => opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 var app = builder.Build();
+
+if(app.Environment.IsDevelopment()){
+    using (var serviceScope = app.Services.CreateScope())
+    {
+        var seeder = new TeamsDatabaseSeeder(serviceScope.ServiceProvider.GetService<TeamsContext>());
+        seeder.SeedForDev();
+    }
+}
 
 app.MapGet("/", () => "Hello World from Teams API!");
 
