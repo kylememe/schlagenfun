@@ -1,6 +1,9 @@
 
+var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+var DbPath = System.IO.Path.Join(path, "teams.db");
+
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<TeamsContext>(opt => opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
+builder.Services.AddDbContext<TeamsContext>(opt => opt.UseSqlite($"Data Source={DbPath}"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 var app = builder.Build();
 
