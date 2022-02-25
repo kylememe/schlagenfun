@@ -1,10 +1,10 @@
 
-namespace Schlagenfun.Services.Teams.Infrastructure.Seeding
+namespace Schlagenfun.Services.Teams.Infrastructure
 {
-    public class TeamsDatabaseSeeder
+    public class TeamsSeeder
     {
         private TeamsContext _db;
-        public TeamsDatabaseSeeder(TeamsContext teamsDB)
+        public TeamsSeeder(TeamsContext teamsDB)
         {
             _db = teamsDB;
             _db.Database.EnsureCreated();            

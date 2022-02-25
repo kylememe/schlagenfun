@@ -10,7 +10,7 @@ var app = builder.Build();
 if(app.Environment.IsDevelopment()){
     using (var serviceScope = app.Services.CreateScope())
     {
-        var seeder = new TeamsDatabaseSeeder(serviceScope.ServiceProvider.GetService<TeamsContext>());
+        var seeder = new TeamsSeeder(serviceScope.ServiceProvider.GetService<TeamsContext>());
         seeder.SeedForDev();
     }
 }
