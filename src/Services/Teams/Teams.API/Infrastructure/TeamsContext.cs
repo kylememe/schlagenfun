@@ -23,7 +23,8 @@ public class TeamsContext : DbContext
             .HasKey(e => e.Id);
 
         builder.Entity<Team>()
-            .Property(e => e.Id)            
+            .Property(e => e.Id)
+                .ValueGeneratedOnAdd()           
                 .IsRequired();
 
         builder.Entity<Team>()
