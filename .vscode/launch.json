@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "web",
+                "FLASK_APP": "schlagen_web",
                 "FLASK_DEBUG": "1"
             },
             "args": [

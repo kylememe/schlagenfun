@@ -20,7 +20,7 @@
 			],
 			"dockerRun": {
 				"env": {
-					"FLASK_APP": "web/__init__.py"
+					"FLASK_APP": "schlagen_web/__init__.py"
 				}
 			},
 			"python": {
