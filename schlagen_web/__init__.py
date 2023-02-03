@@ -34,11 +34,12 @@ def create_app(test_config=None):
     db.init_app(app)
 
     #initialize database if it hasn't been yet. Should add check in here to make sure we want to do this from config. 
-    with app.app_context():
-        instance = db.get_db()
-        usertable = instance.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='user';").fetchone()
-        if usertable is None:
-            db.init_db()
+    if os.getenv("FLASK_ENV", default="Production").lower() == "development":
+        with app.app_context():
+            instance = db.get_db()
+            tableCount = instance.execute("SELECT Count(*) FROM sqlite_master WHERE type='table';").fetchone()[0]
+            if tableCount == 0:
+                db.init_db()
 
 
     from . import auth
