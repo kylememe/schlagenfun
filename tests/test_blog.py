@@ -1,5 +1,5 @@
 import pytest
-from web.db import get_db
+from schlagen_web.db import get_db
 
 
 def test_index(client, auth):

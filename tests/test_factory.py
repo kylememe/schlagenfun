@@ -1,4 +1,4 @@
-from web import create_app
+from schlagen_web import create_app
 
 
 def test_config():

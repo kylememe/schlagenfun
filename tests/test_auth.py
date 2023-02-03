@@ -1,6 +1,6 @@
 import pytest
 from flask import g, session
-from web.db import get_db
+from schlagen_web.db import get_db
 
 
 def test_register(client, app):

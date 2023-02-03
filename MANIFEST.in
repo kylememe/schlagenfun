@@ -1,0 +1,4 @@
+include schlagen_web/schema.sql
+graft schlagen_web/static
+graft schlagen_web/templates
+global-exclude *.pyc
