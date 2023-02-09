@@ -1,3 +1,12 @@
 {
-    "sqltools.useNodeRuntime": true
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Schlagenfun",
+            "group": "Dev",
+            "database": "${workspaceFolder:schlagenfun}/instance/schlagenfun.sqlite"
+        }
+    ]
 }
