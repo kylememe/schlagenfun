@@ -2,23 +2,15 @@ import os
 
 from flask import Flask
 
+from config import Config
+from schlagen_web.extensions import db
 
-def create_app(test_config=None):
+
+def create_app(config_class=Config):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        # a default secret that should be overridden by instance config
-        SECRET_KEY="dev",
-        # store the database in the instance folder
-        DATABASE=os.path.join(app.instance_path, "schlagenfun.sqlite"),
-    )
-
-    if test_config is None:
-        # load the instance con
-        app.config.from_pyfile("config.py", silent=True)
-    else:
-        # load the test config if passed in
-        app.config.update(test_config)
+    
+    app.config.from_object(config_class)
 
     # ensure the instance folder exists
     try:
@@ -26,22 +18,9 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route("/hello")
-    def hello():
-        return "Hello, World!"    
-
-    from . import db
+    #initialize flask extensions
     db.init_app(app)
-
-    #initialize database if it hasn't been yet. Should add check in here to make sure we want to do this from config. 
-    if os.getenv("FLASK_ENV", default="Production").lower() == "development":
-        with app.app_context():
-            instance = db.get_db()
-            tableCount = instance.execute("SELECT Count(*) FROM sqlite_master WHERE type='table';").fetchone()[0]
-            if tableCount == 0:
-                db.init_db()
-
-
+    
     from . import auth
     app.register_blueprint(auth.bp)
 
