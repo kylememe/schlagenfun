@@ -23,12 +23,16 @@ def login_required(view):
 
 @bp.before_app_request
 def load_logged_in_user():
-    user_id = session.get('user_id')
-
+    user_id = session.get('user_id')    
+    
     if user_id is None:
         g.user = None
     else:
-        g.user = User.query.get_or_404(user_id)        
+        user = User.query.get(user_id)
+        if user is None:
+            g.user = None
+        else:
+            g.user = user
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():

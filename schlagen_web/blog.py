@@ -28,8 +28,11 @@ def get_post(id, check_author=True):
 @bp.route('/')
 def index():
 
-    posts = db.session.scalars(select(Post, User.username).order_by(Post.created))
-
+    posts = db.session.execute(
+        select(Post.id, Post.author_id, Post.body, Post.created, Post.title, User.username)
+        .join(User)
+        .order_by(Post.created))        
+    
     return render_template('blog/index.html', posts=posts)
 
 @bp.route('/create', methods=('GET', 'POST'))
