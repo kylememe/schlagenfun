@@ -29,7 +29,7 @@
             "preLaunchTask": "docker-run: debug",
             "python": {
                 "pathMappings": [
-                    {
+      {
                         "localRoot": "${workspaceFolder}",
                         "remoteRoot": "/app"
                     }
@@ -39,3 +39,4 @@
         }
     ]
 }
+
