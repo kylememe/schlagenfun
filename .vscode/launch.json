@@ -12,8 +12,7 @@
             "env": {
                 "FLASK_APP": "schlagen_web",
                 "FLASK_DEBUG": "1",
-                "FLASK_ENV": "development",
-                "DATABASE_URI": "postgresql://schlagenuser:@localhost:5432/schlagenfun"
+                "FLASK_ENV": "development"                
             },
             "args": [
                 "run",
