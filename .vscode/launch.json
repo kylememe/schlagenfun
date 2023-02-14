@@ -12,7 +12,7 @@
             "env": {
                 "FLASK_APP": "schlagen_web",
                 "FLASK_DEBUG": "1",
-                "FLASK_ENV": "development"                
+                "FLASK_ENV": "development"
             },
             "args": [
                 "run",
