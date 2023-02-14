@@ -11,10 +11,8 @@ services:
       - /Users/kylesmith/Repos/schlagenfun/instance:/app/instance
     ports:
       - 39655:5000
-    environment:
-      - FLASK_APP=schlagen_web/__init__DNE.py
-      - FLASK_ENV=development
-      - DATABASE_URI=postgresql://schlagenuser:@db:5432/schlagenfun
+    env_file:
+      - web-variables.env
     depends_on:
       - db
   db:
@@ -22,7 +20,6 @@ services:
     image: postgres
     volumes:
       - /Users/kylesmith/Repos/schlagenfun/instance/postgres:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=schlagenuser
-      - POSTGRES_PASSWORD=
+    env_file:
+      - db-variables.env
 
