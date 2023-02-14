@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  schlagenfun-web:
+    container_name: schlagenfun-web
+    image: schlagenfun:latest
+    build: .
+    user: appuser
+    working_dir: /app
+    volumes:
+      - /Users/kylesmith/Repos/schlagenfun/instance:/app/instance
+    ports:
+      - 39655:5000
+    environment:
+      - FLASK_APP=schlagen_web/__init__DNE.py
+      - FLASK_ENV=development
+      - DATABASE_URI=postgresql://schlagenuser:@db:5432/schlagenfun
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: postgres
+    volumes:
+      - /Users/kylesmith/Repos/schlagenfun/instance/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=schlagenuser
+      - POSTGRES_PASSWORD=
+
